@@ -1,6 +1,6 @@
 name:  build and deploy
 
-on:
+#on:
 #  push:
 #    branches: [ master ]
   

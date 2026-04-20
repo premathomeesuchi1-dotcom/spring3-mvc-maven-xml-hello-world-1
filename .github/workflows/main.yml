@@ -41,4 +41,9 @@ jobs:
       run: cd devops && terraform init 
     - name: terraform apply stage
       run : cd devops && terraform apply -var="tag=${{ env.RELEASE_VERSION  }}" -auto-approve
+    - name: Terraform Destroy
+      run: |
+        cd devops
+        terraform init
+        terraform destroy -auto-approve
 

@@ -15,4 +15,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build with Maven
       run: mvn package
-
+    - name: Set Relase version
+      id: vars
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: build docker image and push to ecr repo
+      run: |
+         aws ecr get-login-password --region ap-south-1 | \
+         sudo docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_NAME }}
+         sudo docker build -t ${{ secrets.ECR_REPO_NAME }}/springapp:${{ env.RELEASE_VERSION  }} .
+         sudo docker push ${{ secrets.ECR_REPO_NAME }}/springapp:${{ env.RELEASE_VERSION }}
+      env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         AWS_REGION: ap-south-1

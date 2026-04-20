@@ -37,4 +37,8 @@ jobs:
       run: |
         docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/springapp:${{ env.RELEASE_VERSION }} .
         docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/springapp:${{ env.RELEASE_VERSION }}
+    - name: terrform init stage
+      run: cd devops && terraform init 
+    - name: terraform apply stage
+      run : cd devops && terraform apply -var="tag=${{ env.RELEASE_VERSION  }}" -auto-approve
 

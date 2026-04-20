@@ -28,4 +28,4 @@ jobs:
     - name: Terraform Destroy
       run: |
         cd devops
-        terraform destroy -auto-approve
+        terraform destroy -var="tag=${{ env.v.0.8 }}" -auto-approve-auto-approve
